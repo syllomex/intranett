@@ -15,6 +15,9 @@ export class PostgresUserEntity {
 
   @Column()
   password!: string;
+
+  @Column()
+  access!: number;
 }
 
 export class PostgresUsersRepository implements IUsersRepository {
