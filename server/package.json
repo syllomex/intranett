@@ -9,6 +9,7 @@
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pg": "^8.3.3",
@@ -20,6 +21,7 @@
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.8",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.10.0",
     "jest": "^26.4.2",
@@ -29,7 +31,7 @@
     "typescript": "^4.0.2"
   },
   "scripts": {
-    "dev": "tsnd ./src/server.ts --transpile-only --respawn --ignore-watch node_modules",
+    "dev": "tsnd ./src/server.ts --transpile-only --respawn --ignore-watch node_modules --files",
     "start": "node ./dist/server.js",
     "test": "jest --detectOpenHandles",
     "typeorm": "npx ts-node ./node_modules/typeorm/cli.js"
