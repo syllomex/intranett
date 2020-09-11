@@ -1,4 +1,4 @@
-export function splitAuthorization(authorization: string | undefined) {
+export function splitAuthorization(authorization: string | undefined): string {
   if (!authorization) throw new Error("no token provided");
   const [bearer, token] = authorization.split(" ");
 
@@ -6,5 +6,5 @@ export function splitAuthorization(authorization: string | undefined) {
 
   if (!token) throw new Error("invalid token");
 
-  return { bearer, token };
+  return token;
 }

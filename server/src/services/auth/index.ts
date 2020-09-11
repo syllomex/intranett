@@ -11,21 +11,17 @@ export class Auth {
   }
 
   getPayload(token: string): Payload | undefined {
-    try {
-      const tmp_payload: any = jwt.verify(token, JWT_SECRET);
+    const tmp_payload: any = jwt.verify(token, JWT_SECRET);
 
-      if (!tmp_payload.id || !tmp_payload.exp || !tmp_payload.iat)
-        return undefined;
+    if (!tmp_payload.id || !tmp_payload.exp || !tmp_payload.iat)
+      throw new Error("invalid payload");
 
-      const payload: Payload = {
-        id: tmp_payload.id,
-        exp: tmp_payload.exp,
-        iat: tmp_payload.iat,
-      };
+    const payload: Payload = {
+      id: tmp_payload.id,
+      exp: tmp_payload.exp,
+      iat: tmp_payload.iat,
+    };
 
-      return payload;
-    } catch (error) {
-      return undefined;
-    }
+    return payload;
   }
 }

@@ -7,17 +7,24 @@ const auth = new Auth();
 
 export function isLogged(req: Request, res: Response, next: NextFunction) {
   try {
-    const { token } = splitAuthorization(req.headers.authorization);
+    const token = splitAuthorization(req.headers.authorization);
 
     const payload: Payload | undefined = auth.getPayload(token);
 
-    if (!payload) throw new Error("can't get token payload");
+    if (!payload) throw new Error("invalid token");
 
     req.payload = payload;
 
     next();
   } catch (error) {
     let statusCode = 400;
-    return res.send(statusCode).json({ message: error.message });
+
+    if (
+      error.message === "invalid token" ||
+      error.message === "malformed token"
+    )
+      statusCode = 401;
+
+    return res.status(statusCode).json({ message: error.message });
   }
 }

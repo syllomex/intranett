@@ -31,7 +31,7 @@
     "typescript": "^4.0.2"
   },
   "scripts": {
-    "dev": "tsnd ./src/server.ts --transpile-only --respawn --ignore-watch node_modules --files",
+    "dev": "tsnd --files --transpile-only --respawn --ignore-watch node_modules ./src/server.ts",
     "start": "node ./dist/server.js",
     "test": "jest --detectOpenHandles",
     "typeorm": "npx ts-node ./node_modules/typeorm/cli.js"
