@@ -1,0 +1,14 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "leo",
+  "password": "vsg72qc3",
+  "database": "intranett",
+  "logging": false,
+  "entities": ["src/repositories/implementations/*.ts"],
+  "migrations": ["src/database/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "src/database/migrations"
+  }
+}

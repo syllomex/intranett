@@ -1,8 +1,37 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "repository": "https://github.com/syllomex/intranett",
   "author": "Leonardo Santos<leonardojdossantos@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "pg": "^8.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.26",
+    "uuidv4": "^6.2.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.7",
+    "@types/express": "^4.17.8",
+    "@types/morgan": "^1.9.1",
+    "@types/node": "^14.10.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.3.0",
+    "ts-node-dev": "^1.0.0-pre.62",
+    "tsc": "^1.20150623.0",
+    "typescript": "^4.0.2"
+  },
+  "scripts": {
+    "dev": "tsnd ./src/server.ts --transpile-only --respawn --ignore-watch node_modules",
+    "start": "node ./dist/server.js",
+    "test": "jest --detectOpenHandles",
+    "typeorm": "npx ts-node ./node_modules/typeorm/cli.js"
+  }
 }
