@@ -9,6 +9,11 @@ export class CreateUserUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   async execute(data: ICreateUserDTO) {
+    if (!data.email || data.email === "") throw new Error("empty email");
+    if (!data.name || data.name === "") throw new Error("empty name");
+    if (!data.password || data.password === "")
+      throw new Error("empty password");
+
     const userAlreadyExists = await this.usersRepository.findByEmail(
       data.email
     );

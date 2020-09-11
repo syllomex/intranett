@@ -32,7 +32,5 @@ export class PostgresUsersRepository implements IUsersRepository {
     const repository = getRepository(PostgresUserEntity);
     const new_user = repository.create(user);
     await repository.save(new_user);
-
-    return Promise.resolve();
   }
 }
