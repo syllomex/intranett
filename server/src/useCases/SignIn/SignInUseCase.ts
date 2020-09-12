@@ -7,6 +7,7 @@ export interface Payload {
   id: string;
   exp: string;
   iat: string;
+  manager: boolean;
 }
 
 export class SignInUseCase {
@@ -25,7 +26,8 @@ export class SignInUseCase {
     );
     if (!correct_password) throw new Error("invalid password");
 
-    const access_token = this.auth.sign(user.id);
+    const isManager = user.access === 1;
+    const access_token = this.auth.sign(user.id, isManager);
 
     if (!access_token) throw new Error("error on generating access token");
 

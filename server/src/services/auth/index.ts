@@ -4,8 +4,8 @@ import { Payload } from "../../useCases/SignIn/SignInUseCase";
 const JWT_SECRET = "provisory_secret";
 
 export class Auth {
-  sign(id: string): string {
-    const payload = jwt.sign({ id }, JWT_SECRET, { expiresIn: "1d" });
+  sign(id: string, manager: boolean): string {
+    const payload = jwt.sign({ id, manager }, JWT_SECRET, { expiresIn: "1d" });
 
     return payload;
   }
@@ -20,6 +20,7 @@ export class Auth {
       id: tmp_payload.id,
       exp: tmp_payload.exp,
       iat: tmp_payload.iat,
+      manager: tmp_payload.manager,
     };
 
     return payload;

@@ -5,7 +5,7 @@ describe("test authorization", () => {
   it("should return an access token", () => {
     const auth = new Auth();
 
-    const valid_token = auth.sign("random_id");
+    const valid_token = auth.sign("random_id", false);
     const valid_authorization = `Bearer ${valid_token}`;
 
     const token = splitAuthorization(valid_authorization);
