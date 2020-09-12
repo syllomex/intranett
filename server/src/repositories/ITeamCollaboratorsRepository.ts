@@ -5,5 +5,6 @@ import { User } from "../entities/User";
 export interface ITeamCollaboratorsRepository {
   addUserToTeam(collaborator: TeamCollaborator): Promise<void>;
   getUsersFromTeam(id: string): Promise<User[]>;
-  indexTeamCollaboratorsTasks(id: string): Promise<CollaboratorTask[]>;
+  indexTeamCollaboratorsTasks(manager_id: string): Promise<CollaboratorTask[]>;
+  checkUserAlreadyInTeam(team_id: string, user_id: string): Promise<boolean>;
 }

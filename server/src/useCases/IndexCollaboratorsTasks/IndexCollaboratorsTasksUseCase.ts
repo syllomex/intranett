@@ -1,14 +1,13 @@
 import { ITeamCollaboratorsRepository } from "../../repositories/ITeamCollaboratorsRepository";
-import { IIndexTeamCollaboratorsTasksDTO } from "./IndexTeamCollaboratorsTasksDTO";
+import { IIndexCollaboratorsTasksDTO } from "./IndexCollaboratorsTasksDTO";
 
-export class IndexTeamCollaboratorsTasksUseCase {
+export class IndexCollaboratorsTasksUseCase {
   constructor(private collaboratorsRepository: ITeamCollaboratorsRepository) {}
 
-  async execute(data: IIndexTeamCollaboratorsTasksDTO) {
+  async execute(data: IIndexCollaboratorsTasksDTO) {
     const tasks = await this.collaboratorsRepository.indexTeamCollaboratorsTasks(
-      data.team_id
+      data.manager_id
     );
-    
     return tasks;
   }
 }

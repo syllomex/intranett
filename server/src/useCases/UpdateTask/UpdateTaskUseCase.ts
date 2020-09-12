@@ -8,6 +8,9 @@ export class UpdateTaskUseCase {
     if (!data.id || data.id === "") throw new Error("empty id");
     if (!data.end_date) throw new Error("empty end date");
 
+    const owner = await this.taskRepository.checkOwner(data.id, data.user_id);
+    if (!owner) throw new Error("not the task owner");
+
     await this.taskRepository.finish(data.id, data.end_date);
   }
 
@@ -15,6 +18,9 @@ export class UpdateTaskUseCase {
     if (!data.id || data.id === "") throw new Error("empty id");
     if (!data.end_date) throw new Error("empty end date");
     if (!data.cancel_reason) throw new Error("empty cancel reason");
+
+    const owner = await this.taskRepository.checkOwner(data.id, data.user_id);
+    if (!owner) throw new Error("not the task owner");
 
     await this.taskRepository.cancel(
       data.id,

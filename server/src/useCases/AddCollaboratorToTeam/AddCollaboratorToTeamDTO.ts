@@ -1,4 +1,5 @@
 export interface IAddCollaboratorToTeamDTO {
-  id: string;
-  user_id: string;
+  team_id: string;
+  manager_id: string;
+  email: string;
 }

@@ -9,7 +9,9 @@ export class IndexTaskController {
     try {
       const { id: user_id } = req.payload;
 
-      const tasks: Task[] = await this.indexTaskUseCase.indexByUser(user_id);
+      const tasks: Task[] = await this.indexTaskUseCase.indexByUser({
+        user_id,
+      });
 
       return res.json(tasks);
     } catch (error) {

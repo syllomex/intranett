@@ -1,6 +1,5 @@
 import { Column, Entity, getRepository, PrimaryColumn } from "typeorm";
 import { CollaboratorTask } from "../../entities/CollaboratorTask";
-import { Task } from "../../entities/Task";
 import { TeamCollaborator } from "../../entities/TeamCollaborator";
 import { User } from "../../entities/User";
 import { ITeamCollaboratorsRepository } from "../ITeamCollaboratorsRepository";
@@ -42,21 +41,34 @@ export class PostgresTeamCollaboratorsRepository
     await repository.save(new_collaborator);
   }
 
-  async indexTeamCollaboratorsTasks(id: string): Promise<CollaboratorTask[]> {
+  async indexTeamCollaboratorsTasks(manager_id: string): Promise<CollaboratorTask[]> {
     const repository = getRepository(PostgresTeamCollaboratorsEntity);
 
     const query = `
-    SELECT T.*, U.name as user_name, U.email
+    SELECT DISTINCT T.*, U.name as user_name, U.email
     FROM team_collaborators C
     INNER JOIN users U
-    ON C.user_id = U.id
+    ON C.user_id = U.id AND U.id <> '${manager_id}'
     INNER JOIN tasks T
     ON U.id = T.user_id
-    WHERE team_id = '${id}'
+    INNER JOIN teams TE
+    ON TE.manager = '${manager_id}'
     `;
 
     const tasks = await repository.query(query);
 
     return tasks;
+  }
+
+  async checkUserAlreadyInTeam(
+    team_id: string,
+    user_id: string
+  ): Promise<boolean> {
+    const repository = getRepository(PostgresTeamCollaboratorsEntity);
+
+    const user = await repository.findOne({ where: { team_id, user_id } });
+
+    if (user) return true;
+    return false;
   }
 }

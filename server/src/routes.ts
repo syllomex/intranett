@@ -18,7 +18,7 @@ import { updateTaskController } from "./useCases/UpdateTask";
 import { createTeamController } from "./useCases/CreateTeam";
 import { addCollaboratorToTeamController } from "./useCases/AddCollaboratorToTeam";
 import { getTeamCollaboratorsController } from "./useCases/GetTeamCollaborators";
-import { indexTeamCollaboratorsTasksController } from "./useCases/IndexTeamCollaboratorsTasks";
+import { indexTeamCollaboratorsTasksController } from "./useCases/IndexCollaboratorsTasks";
 import { indexTeamsByManagerController } from "./useCases/IndexTeamsByManager";
 
 const router = Router();
@@ -58,15 +58,15 @@ router.get("/teams", isManager, (req, res) => {
   return indexTeamsByManagerController.handle(req, res);
 });
 
-router.post("/teams/collaborators", isManager, (req, res) => {
+router.post("/teams/:team_id/collaborators", isManager, (req, res) => {
   return addCollaboratorToTeamController.handle(req, res);
 });
 
-router.get("/teams/:id/collaborators", isManager, (req, res) => {
+router.get("/teams/:team_id/collaborators", isManager, (req, res) => {
   return getTeamCollaboratorsController.handle(req, res);
 });
 
-router.get("/teams/:team_id/tasks", isManager, (req, res) => {
+router.get("/teams/tasks", isManager, (req, res) => {
   return indexTeamCollaboratorsTasksController.handle(req, res);
 });
 

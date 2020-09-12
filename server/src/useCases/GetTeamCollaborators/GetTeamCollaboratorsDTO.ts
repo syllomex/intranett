@@ -1,3 +1,4 @@
 export interface IGetTeamCollaboratorsDTO {
-  id: string;
+  team_id: string;
+  manager_id: string;
 }

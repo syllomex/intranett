@@ -1,12 +1,8 @@
 import { Request, Response } from "express";
 import { UpdateTaskUseCase } from "./UpdateTaskUseCase";
-import { CheckTaskUseCase } from "../CheckTask/CheckTaskUseCase";
 
 export class UpdateTaskController {
-  constructor(
-    private updateTaskUseCase: UpdateTaskUseCase,
-    private checkTaskUseCase: CheckTaskUseCase
-  ) {}
+  constructor(private updateTaskUseCase: UpdateTaskUseCase) {}
 
   async handleFinish(req: Request, res: Response): Promise<Response> {
     try {
@@ -14,10 +10,8 @@ export class UpdateTaskController {
       const { end_date } = req.body;
 
       const { id: user_id } = req.payload;
-      const owner = await this.checkTaskUseCase.checkOwner(id, user_id);
-      if (!owner) throw new Error("not the task owner");
 
-      await this.updateTaskUseCase.finish({ id, end_date });
+      await this.updateTaskUseCase.finish({ id, end_date, user_id });
 
       return res.status(204).send();
     } catch (error) {
@@ -35,10 +29,13 @@ export class UpdateTaskController {
       const { end_date, cancel_reason } = req.body;
 
       const { id: user_id } = req.payload;
-      const owner = await this.checkTaskUseCase.checkOwner(id, user_id);
-      if (!owner) throw new Error("not the task owner");
 
-      await this.updateTaskUseCase.cancel({ id, end_date, cancel_reason });
+      await this.updateTaskUseCase.cancel({
+        id,
+        end_date,
+        cancel_reason,
+        user_id,
+      });
 
       return res.status(204).send();
     } catch (error) {

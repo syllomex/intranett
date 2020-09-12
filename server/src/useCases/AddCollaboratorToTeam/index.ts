@@ -1,19 +1,21 @@
 import { PostgresTeamCollaboratorsRepository } from "../../repositories/implementations/PostgresTeamCollaboratorsRepository";
-import { checkTeamOwnerUseCase } from "../CheckTeamOwner";
-import { findUserByIdUseCase } from "../FindUserById";
+import { PostgresTeamsRepository } from "../../repositories/implementations/PostgresTeamsRepository";
+import { PostgresUsersRepository } from "../../repositories/implementations/PostgresUsersRepository";
 import { AddCollaboratorToTeamController } from "./AddCollaboratorToTeamController";
 import { AddCollaboratorToTeamUseCase } from "./AddCollaboratorToTeamUseCase";
 
 const collaboratorRepository = new PostgresTeamCollaboratorsRepository();
+const usersRepository = new PostgresUsersRepository();
+const teamsRepository = new PostgresTeamsRepository();
 
 const addCollaboratorToTeamUseCase = new AddCollaboratorToTeamUseCase(
-  collaboratorRepository
+  collaboratorRepository,
+  usersRepository,
+  teamsRepository
 );
 
 const addCollaboratorToTeamController = new AddCollaboratorToTeamController(
-  addCollaboratorToTeamUseCase,
-  checkTeamOwnerUseCase,
-  findUserByIdUseCase
+  addCollaboratorToTeamUseCase
 );
 
 export { addCollaboratorToTeamUseCase, addCollaboratorToTeamController };
