@@ -1,8 +1,8 @@
 import { Task } from "../../entities/Task";
-import { PostgresTaskRepository } from "../../repositories/implementations/PostgresTasksRepository";
+import { ITasksRepository } from "../../repositories/ITasksRepository";
 
 export class IndexTaskUseCase {
-  constructor(private taskRepository: PostgresTaskRepository) {}
+  constructor(private taskRepository: ITasksRepository) {}
 
   async indexByUser(user_id: string): Promise<Task[]> {
     const tasks = await this.taskRepository.indexByUser(user_id);

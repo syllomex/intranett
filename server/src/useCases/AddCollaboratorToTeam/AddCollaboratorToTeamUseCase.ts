@@ -1,10 +1,10 @@
 import { TeamCollaborator } from "../../entities/TeamCollaborator";
-import { PostgresTeamCollaboratorsRepository } from "../../repositories/implementations/PostgresTeamCollaboratorsRepository";
+import { ITeamCollaboratorsRepository } from "../../repositories/ITeamCollaboratorsRepository";
 import { IAddCollaboratorToTeamDTO } from "./AddCollaboratorToTeamDTO";
 
 export class AddCollaboratorToTeamUseCase {
   constructor(
-    private teamCollaboratorsRepository: PostgresTeamCollaboratorsRepository
+    private teamCollaboratorsRepository: ITeamCollaboratorsRepository
   ) {}
 
   async execute(data: IAddCollaboratorToTeamDTO): Promise<void> {

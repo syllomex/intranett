@@ -1,9 +1,9 @@
 import { Team } from "../../entities/Team";
-import { PostgresTeamsRepository } from "../../repositories/implementations/PostgresTeamsRepository";
+import { ITeamsRepository } from "../../repositories/ITeamsRepository";
 import { ICreateTeamDTO } from "./CreateTeamDTO";
 
 export class CreateTeamUseCase {
-  constructor(private teamsRepository: PostgresTeamsRepository) {}
+  constructor(private teamsRepository: ITeamsRepository) {}
 
   async execute(data: ICreateTeamDTO): Promise<void> {
     if (!data.name || data.name === "") throw new Error("empty name");
