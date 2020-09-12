@@ -21,9 +21,11 @@ export class PostgresUserEntity {
 }
 
 export class PostgresUsersRepository implements IUsersRepository {
-  async findByEmail(email: string): Promise<User | undefined> {
+  async findByEmail(email: string): Promise<User> {
     const repository = getRepository(PostgresUserEntity);
     const user = await repository.findOne({ where: { email } });
+
+    if (!user) throw new Error("user not found");
 
     return user;
   }

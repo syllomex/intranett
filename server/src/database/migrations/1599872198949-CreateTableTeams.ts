@@ -5,11 +5,11 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class CreateTableTasks1599859981526 implements MigrationInterface {
+export class CreateTableTeams1599872198949 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "tasks",
+        name: "teams",
         columns: [
           {
             name: "id",
@@ -23,27 +23,7 @@ export class CreateTableTasks1599859981526 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: "start_date",
-            type: "timestamp",
-            isNullable: false,
-          },
-          {
-            name: "end_date",
-            type: "timestamp",
-            isNullable: true,
-          },
-          {
-            name: "status",
-            type: "integer",
-            isNullable: false,
-          },
-          {
-            name: "cancel_reason",
-            type: "varchar",
-            isNullable: true,
-          },
-          {
-            name: "user_id",
+            name: "manager",
             type: "uuid",
             isNullable: false,
           },
@@ -52,9 +32,9 @@ export class CreateTableTasks1599859981526 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      "tasks",
+      "teams",
       new TableForeignKey({
-        columnNames: ["user_id"],
+        columnNames: ["manager"],
         referencedTableName: "users",
         referencedColumnNames: ["id"],
       })
@@ -62,6 +42,6 @@ export class CreateTableTasks1599859981526 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("tasks", undefined, true);
+    await queryRunner.dropTable("teams", undefined, true);
   }
 }

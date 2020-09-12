@@ -5,11 +5,12 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class CreateTableTasks1599859981526 implements MigrationInterface {
+export class CreateTableTeamCollaborators1599872785752
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "tasks",
+        name: "team_collaborators",
         columns: [
           {
             name: "id",
@@ -18,32 +19,12 @@ export class CreateTableTasks1599859981526 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: "name",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
-            name: "start_date",
-            type: "timestamp",
-            isNullable: false,
-          },
-          {
-            name: "end_date",
-            type: "timestamp",
-            isNullable: true,
-          },
-          {
-            name: "status",
-            type: "integer",
-            isNullable: false,
-          },
-          {
-            name: "cancel_reason",
-            type: "varchar",
-            isNullable: true,
-          },
-          {
             name: "user_id",
+            type: "uuid",
+            isNullable: false,
+          },
+          {
+            name: "team_id",
             type: "uuid",
             isNullable: false,
           },
@@ -52,16 +33,25 @@ export class CreateTableTasks1599859981526 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      "tasks",
+      "team_collaborators",
       new TableForeignKey({
         columnNames: ["user_id"],
         referencedTableName: "users",
         referencedColumnNames: ["id"],
       })
     );
+
+    await queryRunner.createForeignKey(
+      "team_collaborators",
+      new TableForeignKey({
+        columnNames: ["team_id"],
+        referencedTableName: "teams",
+        referencedColumnNames: ["id"],
+      })
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("tasks", undefined, true);
+    await queryRunner.dropTable("teams", undefined, true);
   }
 }
