@@ -1,16 +1,25 @@
 import { Router } from "express";
+
+/** MIDDLEWARES */
 import { isLogged } from "./middlewares/isLogged";
 import { isManager } from "./middlewares/isManager";
-import { addCollaboratorToTeamController } from "./useCases/AddCollaboratorToTeam";
-import { createTaskController } from "./useCases/CreateTask";
-import { createTeamController } from "./useCases/CreateTeam";
+
+/** CONTROLLERS */
+// User and Auth
 import { createUserController } from "./useCases/CreateUser";
-import { getTeamCollaboratorsController } from "./useCases/GetTeamCollaborators";
+import { signInController } from "./useCases/SignIn";
+
+// Task
+import { createTaskController } from "./useCases/CreateTask";
 import { indexTaskController } from "./useCases/IndexTask";
+import { updateTaskController } from "./useCases/UpdateTask";
+
+// Team
+import { createTeamController } from "./useCases/CreateTeam";
+import { addCollaboratorToTeamController } from "./useCases/AddCollaboratorToTeam";
+import { getTeamCollaboratorsController } from "./useCases/GetTeamCollaborators";
 import { indexTeamCollaboratorsTasksController } from "./useCases/IndexTeamCollaboratorsTasks";
 import { indexTeamsByManagerController } from "./useCases/IndexTeamsByManager";
-import { signInController } from "./useCases/SignIn";
-import { updateTaskController } from "./useCases/UpdateTask";
 
 const router = Router();
 
@@ -32,11 +41,11 @@ router.post("/tasks", isLogged, (req, res) => {
   return createTaskController.handle(req, res);
 });
 
-router.put("/tasks/finish/:id", isLogged, (req, res) => {
+router.put("/tasks/:id/finish", isLogged, (req, res) => {
   return updateTaskController.handleFinish(req, res);
 });
 
-router.put("/tasks/cancel/:id", isLogged, (req, res) => {
+router.put("/tasks/:id/cancel", isLogged, (req, res) => {
   return updateTaskController.handleCancel(req, res);
 });
 
