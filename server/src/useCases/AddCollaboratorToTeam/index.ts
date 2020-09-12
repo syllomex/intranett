@@ -1,4 +1,5 @@
 import { PostgresTeamCollaboratorsRepository } from "../../repositories/implementations/PostgresTeamCollaboratorsRepository";
+import { checkTeamOwnerUseCase } from "../CheckTeamOwner";
 import { findUserByIdUseCase } from "../FindUserById";
 import { AddCollaboratorToTeamController } from "./AddCollaboratorToTeamController";
 import { AddCollaboratorToTeamUseCase } from "./AddCollaboratorToTeamUseCase";
@@ -11,6 +12,7 @@ const addCollaboratorToTeamUseCase = new AddCollaboratorToTeamUseCase(
 
 const addCollaboratorToTeamController = new AddCollaboratorToTeamController(
   addCollaboratorToTeamUseCase,
+  checkTeamOwnerUseCase,
   findUserByIdUseCase
 );
 

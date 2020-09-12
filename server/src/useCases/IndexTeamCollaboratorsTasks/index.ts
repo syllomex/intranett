@@ -1,6 +1,7 @@
 import { PostgresTeamCollaboratorsRepository } from "../../repositories/implementations/PostgresTeamCollaboratorsRepository";
 import { IndexTeamCollaboratorsTasksUseCase } from "./IndexTeamCollaboratorsTasksUseCase";
 import { IndexTeamCollaboratorsTasksController } from "./IndexTeamCollaboratorsTasksController";
+import { checkTeamOwnerUseCase } from "../CheckTeamOwner";
 
 const teamCollaboratorsRepository = new PostgresTeamCollaboratorsRepository();
 
@@ -9,7 +10,8 @@ const indexTeamCollaboratorsTasksUseCase = new IndexTeamCollaboratorsTasksUseCas
 );
 
 const indexTeamCollaboratorsTasksController = new IndexTeamCollaboratorsTasksController(
-  indexTeamCollaboratorsTasksUseCase
+  indexTeamCollaboratorsTasksUseCase,
+  checkTeamOwnerUseCase
 );
 
 export {
