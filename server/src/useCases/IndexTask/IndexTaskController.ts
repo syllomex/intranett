@@ -5,7 +5,7 @@ import { IndexTaskUseCase } from "./IndexTaskUseCase";
 export class IndexTaskController {
   constructor(private indexTaskUseCase: IndexTaskUseCase) {}
 
-  async handleIndexByUser(req: Request, res: Response): Promise<Response> {
+  async handle(req: Request, res: Response): Promise<Response> {
     try {
       const { id: user_id } = req.payload;
 

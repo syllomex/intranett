@@ -20,4 +20,10 @@ export class PostgresTeamsRepository implements ITeamsRepository {
     const new_team = teams.create(team);
     await teams.save(new_team);
   }
+  
+  async findByManager(id: string): Promise<Team[]> {
+    const repository = getRepository(PostgresTeamEntity);
+    const teams = await repository.find({ where: { manager: id } });
+    return teams;
+  }
 }
