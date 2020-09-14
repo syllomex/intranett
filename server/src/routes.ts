@@ -20,6 +20,7 @@ import { addCollaboratorToTeamController } from "./useCases/AddCollaboratorToTea
 import { getTeamCollaboratorsController } from "./useCases/GetTeamCollaborators";
 import { indexTeamCollaboratorsTasksController } from "./useCases/IndexCollaboratorsTasks";
 import { indexTeamsByManagerController } from "./useCases/IndexTeamsByManager";
+import { getProfileController } from "./useCases/GetProfile";
 
 const router = Router();
 
@@ -30,6 +31,10 @@ router.post("/users", (req, res) => {
 
 router.post("/auth", (req, res) => {
   return signInController.handle(req, res);
+});
+
+router.get("/profile", isLogged, (req, res) => {
+  return getProfileController.handle(req, res);
 });
 
 /** TASKS ROUTES */

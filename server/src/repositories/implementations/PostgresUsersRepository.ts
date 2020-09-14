@@ -21,6 +21,12 @@ export class PostgresUserEntity {
 }
 
 export class PostgresUsersRepository implements IUsersRepository {
+  async save(user: User): Promise<void> {
+    const repository = getRepository(PostgresUserEntity);
+    const new_user = repository.create(user);
+    await repository.save(new_user);
+  }
+
   async findByEmail(email: string): Promise<User> {
     const repository = getRepository(PostgresUserEntity);
     const user = await repository.findOne({ where: { email } });
@@ -30,9 +36,15 @@ export class PostgresUsersRepository implements IUsersRepository {
     return user;
   }
 
-  async save(user: User): Promise<void> {
+  async findById(id: string): Promise<User> {
     const repository = getRepository(PostgresUserEntity);
-    const new_user = repository.create(user);
-    await repository.save(new_user);
+
+    const user = await repository.findOne(id, {
+      select: ["id", "name", "email", "access"],
+    });
+
+    if (!user) throw new Error("user not found");
+
+    return user;
   }
 }
