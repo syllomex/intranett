@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 
-function handleFormSubmit(e: FormEvent<HTMLFormElement>): Object {
+function handleFormSubmit(e: FormEvent<HTMLFormElement>): any {
   e.preventDefault();
 
   const form = new FormData(e.currentTarget);

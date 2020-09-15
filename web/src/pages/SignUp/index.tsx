@@ -4,15 +4,17 @@ import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import { handleFormSubmit } from "../../utils/handleFormSubmit";
 
-import { Container, FormContainer, SignInForm, Title } from "./styles";
+import { Container, FormContainer, Title } from "./styles";
 
-const SignUp: React.FC = () => {
+const SignIn: React.FC = () => {
   const { profile, setProfile } = useProfile();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     const data = handleFormSubmit(e);
 
     try {
+      await api.post("/users", data);
+
       const response = await api.post("/auth", data);
       const access_token = response.data.access_token;
 
@@ -30,8 +32,13 @@ const SignUp: React.FC = () => {
   return (
     <Container>
       <FormContainer>
-        <Title>Login</Title>
-        <SignInForm onSubmit={handleSubmit}>
+        <Title>Criar conta</Title>
+        <form onSubmit={handleSubmit}>
+          <label className="form-style" htmlFor="name">
+            Nome completo
+          </label>
+          <input className="form-style" type="text" name="name" id="name" />
+
           <label className="form-style" htmlFor="email">
             E-mail
           </label>
@@ -48,17 +55,20 @@ const SignUp: React.FC = () => {
           />
 
           <span className="form-style">
-            Não possui uma conta? <Link to="/cadastro">Clique aqui</Link> para
-            cadastrar-se!
+            Já possui uma conta? <Link to="/">Clique aqui</Link> para entrar!
           </span>
 
-          <button className="button submit" style={{width: "100%"}} type="submit">
-            Entrar
+          <button
+            className="button submit"
+            style={{ width: "100%" }}
+            type="submit"
+          >
+            Criar Conta
           </button>
-        </SignInForm>
+        </form>
       </FormContainer>
     </Container>
   );
 };
 
-export default SignUp;
+export default SignIn;
