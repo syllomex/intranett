@@ -12,11 +12,11 @@ export class CreateUserController {
 
       return res.status(201).send();
     } catch (error) {
-      let statusCode = 400;
+      let code = 400;
 
-      if (error.message === "user already exists") statusCode = 409;
+      if (error.message === "user already exists") code = 409;
 
-      return res.status(statusCode).json({
+      return res.status(code).json({
         message: error.message || "unexpected error",
       });
     }
