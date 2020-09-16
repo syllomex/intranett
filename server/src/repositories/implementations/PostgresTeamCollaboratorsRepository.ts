@@ -53,6 +53,7 @@ export class PostgresTeamCollaboratorsRepository
     ON U.id = T.user_id
     INNER JOIN teams TE
     ON TE.manager = '${manager_id}'
+    ORDER BY T.status ASC, T.start_date DESC
     `;
 
     const tasks = await repository.query(query);
