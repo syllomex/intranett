@@ -3,6 +3,7 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
   :root {
     --primary: #0073a8;
+    --danger: #f65;
     --link: #7af;
   }
 
@@ -44,12 +45,12 @@ const GlobalStyles = createGlobalStyle`
 
   label.form-style {
     display: block;
-    margin-bottom: 0.8rem;
 
     font-weight: 600;
   }
 
-  input.form-style {
+  input.form-style, textarea.form-style {
+    margin-top: 0.8rem;
     padding: 0.8rem;
 
     border: 1px solid #ddd;
@@ -59,10 +60,23 @@ const GlobalStyles = createGlobalStyle`
     margin-bottom: 2rem;
     width: 100%;
 
-    transition-duration: .2s;
+    transition: border-color .2s;
+
     &:focus {
-      border: 1px solid var(--primary);
+      border-color: var(--primary);
     }
+  }
+
+  textarea.form-style {
+    resize: vertical;
+  }
+
+  input.border-bottom-only, textarea.border-bottom-only {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    padding-left: 0;
+    margin-top: 0;
   }
 
   span.form-style {
@@ -106,6 +120,18 @@ const GlobalStyles = createGlobalStyle`
 
   .justify-end {
     justify-content: flex-end;
+  }
+
+  .w-100 {
+    width: 100%;
+  }
+
+  .mt-2 {
+    margin-top: 2rem;
+  }
+
+  .mr-1 {
+    margin-right: 1rem;
   }
 `;
 

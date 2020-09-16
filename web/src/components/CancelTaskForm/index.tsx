@@ -6,6 +6,13 @@ import { ITask } from "../../interfaces/Task";
 import { handleFormSubmit } from "../../utils/handleFormSubmit";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
+import {
+  BorderlessInput,
+  CancelButton,
+  Label,
+  SubmitButton,
+  Textarea,
+} from "../Styled";
 
 // import { Container } from './styles';
 
@@ -31,8 +38,6 @@ const CancelTaskForm: React.FC<IProps> = ({
     data.end_date = new Date(`${data.end_date}T${data.end_time}`);
     delete data.end_time;
 
-    console.log(data);
-
     try {
       await api.put(`/tasks/${task.id}/cancel`, data, {
         headers: {
@@ -56,47 +61,46 @@ const CancelTaskForm: React.FC<IProps> = ({
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ marginTop: "2rem" }}>
-          <label htmlFor="end_date">
+        <div className="mt-2">
+          <Label htmlFor="end_date">
             <strong>Término</strong>
-          </label>
+          </Label>
         </div>
-        <input
-          type="date"
-          name="end_date"
-          id="end_date"
-          defaultValue={moment(now()).format("YYYY-MM-DD")}
-          required
-        />
-        <input
-          type="time"
-          name="end_time"
-          id="end_time"
-          defaultValue={moment(now()).format("HH:mm")}
-          required
-        />
+
+        <div className="d-flex">
+          <BorderlessInput
+            className="mr-1"
+            type="date"
+            name="end_date"
+            defaultValue={moment(now()).format("YYYY-MM-DD")}
+            required
+          />
+          <BorderlessInput
+            type="time"
+            name="end_time"
+            defaultValue={moment(now()).format("HH:mm")}
+            required
+          />
+        </div>
 
         <div>
-          <label htmlFor="cancel_reason">
+          <Label htmlFor="cancel_reason">
             <strong>Motivo</strong>
-          </label>
+          </Label>
         </div>
         <div>
-          <textarea name="cancel_reason" id="cancel_reason" required />
+          <Textarea
+            name="cancel_reason"
+            required
+            placeholder="Por que você quer cancelar essa tarefa?"
+          />
         </div>
 
         <div className="d-flex justify-end">
-          <button
-            className="button cancel"
-            type="button"
-            style={{ marginRight: "1rem" }}
-            onClick={handleCloseCancelModal}
-          >
+          <CancelButton className="mr-1" onClick={handleCloseCancelModal}>
             VOLTAR
-          </button>
-          <button className="button submit" type="submit">
-            CANCELAR TAREFA
-          </button>
+          </CancelButton>
+          <SubmitButton type="button">CANCELAR TAREFA</SubmitButton>
         </div>
       </form>
     </React.Fragment>

@@ -6,7 +6,9 @@ import { handleFormSubmit } from "../../utils/handleFormSubmit";
 
 import { Container, FormContainer, Title } from "./styles";
 
-const SignIn: React.FC = () => {
+import { Input, Label, SubmitButton } from "../../components/Styled";
+
+const SignUp: React.FC = () => {
   const { profile, setProfile } = useProfile();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -34,41 +36,24 @@ const SignIn: React.FC = () => {
       <FormContainer>
         <Title>Criar conta</Title>
         <form onSubmit={handleSubmit}>
-          <label className="form-style" htmlFor="name">
-            Nome completo
-          </label>
-          <input className="form-style" type="text" name="name" id="name" />
+          <Label htmlFor="name">Nome completo</Label>
+          <Input name="name" />
 
-          <label className="form-style" htmlFor="email">
-            E-mail
-          </label>
-          <input className="form-style" type="email" name="email" id="email" />
+          <Label htmlFor="email">E-mail</Label>
+          <Input type="email" name="email" />
 
-          <label className="form-style" htmlFor="password">
-            Senha
-          </label>
-          <input
-            className="form-style"
-            type="password"
-            name="password"
-            id="password"
-          />
+          <Label htmlFor="password">Senha</Label>
+          <Input type="password" name="password" />
 
           <span className="form-style">
             Já possui uma conta? <Link to="/">Clique aqui</Link> para entrar!
           </span>
 
-          <button
-            className="button submit"
-            style={{ width: "100%" }}
-            type="submit"
-          >
-            Criar Conta
-          </button>
+          <SubmitButton className="w-100">Criar Conta</SubmitButton>
         </form>
       </FormContainer>
     </Container>
   );
 };
 
-export default SignIn;
+export default SignUp;

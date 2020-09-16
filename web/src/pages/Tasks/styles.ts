@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { AddCircleOutline } from "@material-ui/icons";
 
 export const Container = styled.div`
   min-height: 90vh;
@@ -77,5 +78,14 @@ export const NewTaskContainer = styled.form`
 
     border-radius: 50%;
     background-color: #000;
+  }
+`;
+
+export const AddIcon = styled(AddCircleOutline)`
+  cursor: pointer;
+  fill: #bbb !important;
+
+  &:hover {
+    fill: var(--primary) !important;
   }
 `;

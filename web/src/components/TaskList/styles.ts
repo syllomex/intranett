@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CheckCircle, CancelRounded } from "@material-ui/icons";
 
 export const TaskTable = styled.table`
   border: 0;
@@ -58,4 +59,13 @@ export const TaskTableBody = styled.tbody`
       opacity: 0.9;
     }
   }
+`;
+
+export const CheckCircleIcon = styled(CheckCircle)`
+  fill: var(--primary) !important;
+`;
+
+export const CancelIcon = styled(CancelRounded)`
+  margin-right: 0.6rem;
+  fill: var(--danger) !important;
 `;

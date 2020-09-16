@@ -6,8 +6,7 @@ import { formatTime } from "../../utils/formatTime";
 import { api } from "../../services/api";
 import { handleFormSubmit } from "../../utils/handleFormSubmit";
 import { useProfile } from "../../contexts/profile";
-
-// import { Container } from './styles';
+import { BorderlessInput, CancelButton, Label, SubmitButton } from "../Styled";
 
 interface IProps {
   task: ITask;
@@ -16,7 +15,12 @@ interface IProps {
   handleCloseFinishModal: React.Dispatch<any>;
 }
 
-const FinishTaskForm: React.FC<IProps> = ({ task, setTasks, handleCloseFinishModal, handleCloseModal }) => {
+const FinishTaskForm: React.FC<IProps> = ({
+  task,
+  setTasks,
+  handleCloseFinishModal,
+  handleCloseModal,
+}) => {
   const { profile } = useProfile();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -25,8 +29,6 @@ const FinishTaskForm: React.FC<IProps> = ({ task, setTasks, handleCloseFinishMod
     let data = handleFormSubmit(e);
     data.end_date = new Date(`${data.end_date}T${data.end_time}`);
     delete data.end_time;
-
-    console.log(data);
 
     try {
       await api.put(`/tasks/${task.id}/finish`, data, {
@@ -51,38 +53,33 @@ const FinishTaskForm: React.FC<IProps> = ({ task, setTasks, handleCloseFinishMod
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ marginTop: "2rem" }}>
-          <label htmlFor="end_date">
+        <div className="mt-2">
+          <Label htmlFor="end_date">
             <strong>Término</strong>
-          </label>
+          </Label>
         </div>
-        <input
-          type="date"
-          name="end_date"
-          id="end_date"
-          defaultValue={moment(now()).format("YYYY-MM-DD")}
-          required
-        />
-        <input
-          type="time"
-          name="end_time"
-          id="end_time"
-          defaultValue={moment(now()).format("HH:mm")}
-          required
-        />
+
+        <div className="d-flex">
+          <BorderlessInput
+            className="mr-1"
+            type="date"
+            name="end_date"
+            defaultValue={moment(now()).format("YYYY-MM-DD")}
+            required
+          />
+          <BorderlessInput
+            type="time"
+            name="end_time"
+            defaultValue={moment(now()).format("HH:mm")}
+            required
+          />
+        </div>
 
         <div className="d-flex justify-end">
-          <button
-            className="button cancel"
-            type="button"
-            style={{ marginRight: "1rem" }}
-            onClick={handleCloseFinishModal}
-          >
+          <CancelButton className="mr-1" onClick={handleCloseFinishModal}>
             VOLTAR
-          </button>
-          <button className="button submit" type="submit">
-            FINALIZAR TAREFA
-          </button>
+          </CancelButton>
+          <SubmitButton>FINALIZAR TAREFA</SubmitButton>
         </div>
       </form>
     </React.Fragment>

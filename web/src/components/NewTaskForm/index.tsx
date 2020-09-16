@@ -3,6 +3,7 @@ import React, { FormEvent } from "react";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import { handleFormSubmit } from "../../utils/handleFormSubmit";
+import { BorderlessInput, CancelButton, Label, SubmitButton } from "../Styled";
 
 interface IProps {
   newTaskDefaultName: string;
@@ -37,54 +38,35 @@ const NewTaskForm: React.FC<IProps> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <label className="form-style" htmlFor="name">
-        Nome da tarefa
-      </label>
-      <input
-        className="form-style"
-        type="text"
+      <Label htmlFor="name">Nome da tarefa</Label>
+      <BorderlessInput
+        className="form-style border-bottom-only"
         name="name"
-        id="name"
         defaultValue={newTaskDefaultName}
         required
       />
 
-      <label className="form-style" htmlFor="start_date">
-        Data de início
-      </label>
-      <input
-        className="form-style"
+      <Label htmlFor="start_date">Data de início</Label>
+      <BorderlessInput
         type="date"
         name="start_date"
-        id="start_date"
         defaultValue={moment(now()).format("YYYY-MM-DD")}
         required
       />
 
-      <label className="form-style" htmlFor="start_date">
-        Hora de início
-      </label>
-      <input
-        className="form-style"
+      <Label htmlFor="start_date">Hora de início</Label>
+      <BorderlessInput
         type="time"
         name="start_time"
-        id="start_time"
         defaultValue={moment(now()).format("HH:mm")}
         required
       />
 
       <div className="d-flex justify-end">
-        <button
-          className="button cancel"
-          style={{ marginRight: "1rem" }}
-          type="button"
-          onClick={() => closeModal()}
-        >
-          CANCELAR
-        </button>
-        <button className="button submit" type="submit">
-          CRIAR
-        </button>
+        <CancelButton className="mr-1" onClick={() => closeModal()}>
+          VOLTAR
+        </CancelButton>
+        <SubmitButton>CRIAR</SubmitButton>
       </div>
     </form>
   );

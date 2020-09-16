@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import moment, { now } from "moment";
-import "moment/locale/pt-br";
 
 import {
   TaskTable,
   TaskTableHead,
   TaskTableBody,
   TaskTableDivision,
+  CheckCircleIcon,
+  CancelIcon,
 } from "./styles";
 
 import { ITask } from "../../interfaces/Task";
@@ -15,6 +15,8 @@ import { formatTime } from "../../utils/formatTime";
 import { convertStatusToString } from "../../utils/convertStatusToString";
 import FinishTaskForm from "../FinishTaskForm";
 import CancelTaskForm from "../CancelTaskForm";
+import { useProfile } from "../../contexts/profile";
+import { CancelButton, SubmitButton } from "../Styled";
 
 interface IProps {
   tasks: ITask[] | null;
@@ -27,6 +29,8 @@ const TaskList: React.FC<IProps> = ({
   setTasks,
   collaboratorsTasks,
 }) => {
+  const { profile } = useProfile();
+
   const [task, setTask] = useState<ITask | undefined>();
   const [isCollab, setIsCollab] = useState(false);
 
@@ -44,21 +48,12 @@ const TaskList: React.FC<IProps> = ({
     setTask(undefined);
   }
 
-  function handleOpenCancelModal() {
-    setCancelModal(true);
-  }
-
-  function handleCloseCancelModal() {
-    setCancelModal(false);
-  }
-
-  function handleOpenFinishModal() {
-    setFinishModal(true);
-  }
-
-  function handleCloseFinishModal() {
-    setFinishModal(false);
-  }
+  const handlers = {
+    openCancelModal: () => setCancelModal(true),
+    closeCancelModal: () => setCancelModal(false),
+    openFinishModal: () => setFinishModal(true),
+    closeFinishModal: () => setFinishModal(false),
+  };
 
   return (
     <React.Fragment>
@@ -72,7 +67,14 @@ const TaskList: React.FC<IProps> = ({
             <th>Ações</th>
           </tr>
         </TaskTableHead>
+
         <TaskTableBody>
+          {tasks?.length === 0 && (
+            <tr>
+              <td colSpan={5}>Nenhuma tarefa na lista.</td>
+            </tr>
+          )}
+
           {tasks?.map((task: ITask) => (
             <tr
               key={task.id}
@@ -88,26 +90,32 @@ const TaskList: React.FC<IProps> = ({
 
               <td>{convertStatusToString(task.status)}</td>
 
-              <td>
+              <td
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "0.4rem",
+                }}
+              >
                 {task.status === 0 && (
                   <React.Fragment>
                     <a
                       href="#!"
                       onClick={() => {
                         setTask(task);
-                        handleOpenFinishModal();
+                        handlers.openCancelModal();
                       }}
                     >
-                      Concluir
+                      <CancelIcon />
                     </a>
                     <a
                       href="#!"
                       onClick={() => {
                         setTask(task);
-                        handleOpenCancelModal();
+                        handlers.openFinishModal();
                       }}
                     >
-                      Cancelar
+                      <CheckCircleIcon />
                     </a>
                   </React.Fragment>
                 )}
@@ -115,28 +123,32 @@ const TaskList: React.FC<IProps> = ({
             </tr>
           ))}
 
-          <TaskTableDivision>
-            <td colSpan={5}>Tarefas de colaboradores</td>
-          </TaskTableDivision>
+          {profile?.access === 1 && (
+            <React.Fragment>
+              <TaskTableDivision>
+                <td colSpan={5}>Tarefas de colaboradores</td>
+              </TaskTableDivision>
 
-          {collaboratorsTasks?.map((task: ITask) => (
-            <tr
-              key={task.id}
-              onClick={() => {
-                handleOpenModal(task);
-                setIsCollab(true);
-              }}
-            >
-              <td>{task.name}</td>
+              {collaboratorsTasks?.map((task: ITask) => (
+                <tr
+                  key={task.id}
+                  onClick={() => {
+                    handleOpenModal(task);
+                    setIsCollab(true);
+                  }}
+                >
+                  <td>{task.name}</td>
 
-              <td>{formatTime(task.start_date)}</td>
-              <td>{task.end_date && formatTime(task.end_date)}</td>
+                  <td>{formatTime(task.start_date)}</td>
+                  <td>{task.end_date && formatTime(task.end_date)}</td>
 
-              <td>{convertStatusToString(task.status)}</td>
+                  <td>{convertStatusToString(task.status)}</td>
 
-              <td></td>
-            </tr>
-          ))}
+                  <td></td>
+                </tr>
+              ))}
+            </React.Fragment>
+          )}
         </TaskTableBody>
       </TaskTable>
 
@@ -151,7 +163,7 @@ const TaskList: React.FC<IProps> = ({
             <span>{formatTime(task.start_date)}</span>
           </div>
 
-          <div style={{ marginTop: "2rem" }}>
+          <div className="mt-2">
             <strong>Término: </strong>
             <span>
               {task.end_date
@@ -161,14 +173,14 @@ const TaskList: React.FC<IProps> = ({
           </div>
 
           {task.cancel_reason && (
-            <div style={{ marginTop: "2rem" }}>
+            <div className="mt-2">
               <strong>Motivo de cancelamento: </strong>
               <span>{task.cancel_reason}</span>
             </div>
           )}
 
           {isCollab && (
-            <div style={{ marginTop: "2rem" }}>
+            <div className="mt-2">
               <strong>Colaborador: </strong>
               <span>
                 {task.user_name} ({task.email})
@@ -178,31 +190,16 @@ const TaskList: React.FC<IProps> = ({
 
           {task.status === 0 && !isCollab ? (
             <div className="d-flex justify-end">
-              <button
-                className="button cancel"
-                type="button"
-                style={{ marginRight: "1rem" }}
-                onClick={handleOpenCancelModal}
-              >
+              <CancelButton className="mr-1" onClick={handlers.openCancelModal}>
                 CANCELAR
-              </button>
-              <button
-                className="button submit"
-                type="button"
-                onClick={handleOpenFinishModal}
-              >
+              </CancelButton>
+              <SubmitButton type="button" onClick={handlers.openFinishModal}>
                 FINALIZAR
-              </button>
+              </SubmitButton>
             </div>
           ) : (
             <div className="d-flex justify-end">
-              <button
-                className="button cancel"
-                type="button"
-                onClick={handleCloseModal}
-              >
-                VOLTAR
-              </button>
+              <CancelButton onClick={handleCloseModal}>VOLTAR</CancelButton>
             </div>
           )}
 
@@ -215,7 +212,7 @@ const TaskList: React.FC<IProps> = ({
               task={task}
               setTasks={setTasks}
               handleCloseModal={handleCloseModal}
-              handleCloseCancelModal={handleCloseCancelModal}
+              handleCloseCancelModal={handlers.closeCancelModal}
             />
           </Modal>
 
@@ -228,7 +225,7 @@ const TaskList: React.FC<IProps> = ({
               task={task}
               setTasks={setTasks}
               handleCloseModal={handleCloseModal}
-              handleCloseFinishModal={handleCloseFinishModal}
+              handleCloseFinishModal={handlers.closeFinishModal}
             />
           </Modal>
         </Modal>

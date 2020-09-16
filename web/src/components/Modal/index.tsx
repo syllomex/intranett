@@ -1,6 +1,13 @@
-import React, { KeyboardEvent, useEffect } from "react";
+import React from "react";
 
-import { Container, ModalContainer, Overlay, Title, Header, CloseButton } from "./styles";
+import {
+  Container,
+  ModalContainer,
+  Overlay,
+  Title,
+  Header,
+  CloseButton,
+} from "./styles";
 
 interface IProps {
   state: any;

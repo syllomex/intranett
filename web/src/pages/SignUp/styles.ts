@@ -25,7 +25,3 @@ export const Title = styled.h1`
 
   margin-bottom: 2rem;
 `;
-
-export const SignInForm = styled.form`
-  
-`;

@@ -1,12 +1,13 @@
 import React, { FormEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { Input, Label, SubmitButton } from "../../components/Styled";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import { handleFormSubmit } from "../../utils/handleFormSubmit";
 
 import { Container, FormContainer, SignInForm, Title } from "./styles";
 
-const SignUp: React.FC = () => {
+const SignIn: React.FC = () => {
   const { profile, setProfile } = useProfile();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -32,33 +33,22 @@ const SignUp: React.FC = () => {
       <FormContainer>
         <Title>Login</Title>
         <SignInForm onSubmit={handleSubmit}>
-          <label className="form-style" htmlFor="email">
-            E-mail
-          </label>
-          <input className="form-style" type="email" name="email" id="email" />
+          <Label htmlFor="email">E-mail</Label>
+          <Input type="email" name="email" />
 
-          <label className="form-style" htmlFor="password">
-            Senha
-          </label>
-          <input
-            className="form-style"
-            type="password"
-            name="password"
-            id="password"
-          />
+          <Label htmlFor="password">Senha</Label>
+          <Input type="password" name="password" />
 
           <span className="form-style">
             Não possui uma conta? <Link to="/cadastro">Clique aqui</Link> para
             cadastrar-se!
           </span>
 
-          <button className="button submit" style={{width: "100%"}} type="submit">
-            Entrar
-          </button>
+          <SubmitButton className="w-100">Entrar</SubmitButton>
         </SignInForm>
       </FormContainer>
     </Container>
   );
 };
 
-export default SignUp;
+export default SignIn;
