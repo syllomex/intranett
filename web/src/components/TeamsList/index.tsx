@@ -66,7 +66,7 @@ const TeamsList: React.FC<IProps> = ({ close }) => {
   return (
     <div>
       {teams.map((team: any) => (
-        <div key={team.id}>
+        <div key={team.id} style={{marginBottom: "0.5rem"}}>
           <a href="#!" onClick={() => handleClickTeam(team)}>
             {team.name}
           </a>
@@ -77,7 +77,7 @@ const TeamsList: React.FC<IProps> = ({ close }) => {
         <Modal
           state={collaboratorsModal}
           setState={setCollaboratorsModal}
-          title={`Membros - ${team.name}`}
+          title={`Colaboradores - ${team.name}`}
         >
           {collaborators && (
             <CollaboratorsList

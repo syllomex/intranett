@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
-import { handleFormSubmit } from "../../utils/handleFormSubmit";
+import { handleFormData } from "../../utils/handleFormData";
 import { CancelButton, Input, Label, SubmitButton } from "../Styled";
 
 interface IProps {
@@ -14,7 +14,7 @@ const NewTeamForm: React.FC<IProps> = ({ onSuccess, close }) => {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = handleFormSubmit(e);
+    const data = handleFormData(e);
 
     try {
       await api.post("/teams", data, {

@@ -4,6 +4,7 @@ const GlobalStyles = createGlobalStyle`
   :root {
     --primary: #0073a8;
     --danger: #f65;
+    --success: #0e5;
     --link: #7af;
   }
 
@@ -112,6 +113,19 @@ const GlobalStyles = createGlobalStyle`
 
   button.cancel {
     background-color: #fff;
+  }
+
+  span.alert {
+    display: none;
+    margin-bottom: 2rem;
+  }
+
+  span.alert.success {
+    color: var(--success);
+  }
+
+  span.alert.error {
+    color: var(--danger);
   }
 
   .d-flex {

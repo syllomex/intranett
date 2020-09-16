@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 
-function handleFormSubmit(e: FormEvent<HTMLFormElement>): any {
+function handleFormData(e: FormEvent<HTMLFormElement>): any {
   e.preventDefault();
 
   const form = new FormData(e.currentTarget);
@@ -13,4 +13,4 @@ function handleFormSubmit(e: FormEvent<HTMLFormElement>): any {
   return data;
 }
 
-export { handleFormSubmit };
+export { handleFormData };

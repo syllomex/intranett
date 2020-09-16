@@ -3,7 +3,7 @@ import moment, { now } from "moment";
 
 import { formatTime } from "../../utils/formatTime";
 import { ITask } from "../../interfaces/Task";
-import { handleFormSubmit } from "../../utils/handleFormSubmit";
+import { handleFormData } from "../../utils/handleFormData";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import {
@@ -13,8 +13,6 @@ import {
   SubmitButton,
   Textarea,
 } from "../Styled";
-
-// import { Container } from './styles';
 
 interface IProps {
   task: ITask;
@@ -34,7 +32,7 @@ const CancelTaskForm: React.FC<IProps> = ({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    let data = handleFormSubmit(e);
+    let data = handleFormData(e);
     data.end_date = new Date(`${data.end_date}T${data.end_time}`);
     delete data.end_time;
 
@@ -91,8 +89,8 @@ const CancelTaskForm: React.FC<IProps> = ({
         <div>
           <Textarea
             name="cancel_reason"
-            required
             placeholder="Por que você quer cancelar essa tarefa?"
+            required
           />
         </div>
 
@@ -100,7 +98,7 @@ const CancelTaskForm: React.FC<IProps> = ({
           <CancelButton className="mr-1" onClick={handleCloseCancelModal}>
             VOLTAR
           </CancelButton>
-          <SubmitButton type="button">CANCELAR TAREFA</SubmitButton>
+          <SubmitButton>CANCELAR TAREFA</SubmitButton>
         </div>
       </form>
     </React.Fragment>

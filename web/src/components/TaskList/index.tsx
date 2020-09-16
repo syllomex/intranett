@@ -38,22 +38,35 @@ const TaskList: React.FC<IProps> = ({
   const [cancelModal, setCancelModal] = useState(false);
   const [finishModal, setFinishModal] = useState(false);
 
-  function handleOpenModal(task: ITask) {
-    setTask(task);
-    setModal(true);
-  }
-
-  function handleCloseModal() {
-    setModal(false);
-    setTask(undefined);
-  }
-
   const handlers = {
+    openModal: () => setModal(true),
+    closeModal: () => setModal(false),
     openCancelModal: () => setCancelModal(true),
     closeCancelModal: () => setCancelModal(false),
     openFinishModal: () => setFinishModal(true),
     closeFinishModal: () => setFinishModal(false),
   };
+
+  function handleOpenTask(task: ITask, isCollab: boolean) {
+    setIsCollab(isCollab);
+    setTask(task);
+    handlers.openModal();
+  }
+
+  function handleCloseTask() {
+    handlers.closeModal();
+    setTask(undefined);
+  }
+
+  function handleFinishTask(task: ITask) {
+    setTask(task);
+    handlers.openFinishModal();
+  }
+
+  function handleCancelTask(task: ITask) {
+    setTask(task);
+    handlers.openCancelModal();
+  }
 
   return (
     <React.Fragment>
@@ -76,13 +89,7 @@ const TaskList: React.FC<IProps> = ({
           )}
 
           {tasks?.map((task: ITask) => (
-            <tr
-              key={task.id}
-              onClick={() => {
-                handleOpenModal(task);
-                setIsCollab(false);
-              }}
-            >
+            <tr key={task.id} onClick={() => handleOpenTask(task, false)}>
               <td>{task.name}</td>
 
               <td>{formatTime(task.start_date)}</td>
@@ -99,22 +106,10 @@ const TaskList: React.FC<IProps> = ({
               >
                 {task.status === 0 && (
                   <React.Fragment>
-                    <a
-                      href="#!"
-                      onClick={() => {
-                        setTask(task);
-                        handlers.openCancelModal();
-                      }}
-                    >
+                    <a href="#!" onClick={() => handleCancelTask(task)}>
                       <CancelIcon />
                     </a>
-                    <a
-                      href="#!"
-                      onClick={() => {
-                        setTask(task);
-                        handlers.openFinishModal();
-                      }}
-                    >
+                    <a href="#!" onClick={() => handleFinishTask(task)}>
                       <CheckCircleIcon />
                     </a>
                   </React.Fragment>
@@ -130,13 +125,7 @@ const TaskList: React.FC<IProps> = ({
               </TaskTableDivision>
 
               {collaboratorsTasks?.map((task: ITask) => (
-                <tr
-                  key={task.id}
-                  onClick={() => {
-                    handleOpenModal(task);
-                    setIsCollab(true);
-                  }}
-                >
+                <tr key={task.id} onClick={() => handleOpenTask(task, true)}>
                   <td>{task.name}</td>
 
                   <td>{formatTime(task.start_date)}</td>
@@ -199,7 +188,7 @@ const TaskList: React.FC<IProps> = ({
             </div>
           ) : (
             <div className="d-flex justify-end">
-              <CancelButton onClick={handleCloseModal}>VOLTAR</CancelButton>
+              <CancelButton onClick={handleCloseTask}>VOLTAR</CancelButton>
             </div>
           )}
 
@@ -211,7 +200,7 @@ const TaskList: React.FC<IProps> = ({
             <CancelTaskForm
               task={task}
               setTasks={setTasks}
-              handleCloseModal={handleCloseModal}
+              handleCloseModal={handleCloseTask}
               handleCloseCancelModal={handlers.closeCancelModal}
             />
           </Modal>
@@ -224,7 +213,7 @@ const TaskList: React.FC<IProps> = ({
             <FinishTaskForm
               task={task}
               setTasks={setTasks}
-              handleCloseModal={handleCloseModal}
+              handleCloseModal={handleCloseTask}
               handleCloseFinishModal={handlers.closeFinishModal}
             />
           </Modal>

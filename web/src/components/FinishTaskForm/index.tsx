@@ -4,7 +4,7 @@ import moment, { now } from "moment";
 import { ITask } from "../../interfaces/Task";
 import { formatTime } from "../../utils/formatTime";
 import { api } from "../../services/api";
-import { handleFormSubmit } from "../../utils/handleFormSubmit";
+import { handleFormData } from "../../utils/handleFormData";
 import { useProfile } from "../../contexts/profile";
 import { BorderlessInput, CancelButton, Label, SubmitButton } from "../Styled";
 
@@ -26,7 +26,7 @@ const FinishTaskForm: React.FC<IProps> = ({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    let data = handleFormSubmit(e);
+    let data = handleFormData(e);
     data.end_date = new Date(`${data.end_date}T${data.end_time}`);
     delete data.end_time;
 

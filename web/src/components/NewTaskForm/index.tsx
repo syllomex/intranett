@@ -2,7 +2,7 @@ import moment, { now } from "moment";
 import React, { FormEvent } from "react";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
-import { handleFormSubmit } from "../../utils/handleFormSubmit";
+import { handleFormData } from "../../utils/handleFormData";
 import { BorderlessInput, CancelButton, Label, SubmitButton } from "../Styled";
 
 interface IProps {
@@ -19,7 +19,7 @@ const NewTaskForm: React.FC<IProps> = ({
   const { profile } = useProfile();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    let data = handleFormSubmit(e);
+    let data = handleFormData(e);
     data.start_date = new Date(data.start_date + "T" + data.start_time);
     delete data.start_time;
 

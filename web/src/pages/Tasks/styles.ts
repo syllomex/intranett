@@ -55,7 +55,9 @@ export const TasksContainer = styled.div`
 export const NewTaskContainer = styled.form`
   display: flex;
   align-items: center;
+
   width: 70%;
+  margin-bottom: 4rem;
 
   input {
     width: 100%;

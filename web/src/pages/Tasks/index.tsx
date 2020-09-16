@@ -91,8 +91,11 @@ const Tasks: React.FC = () => {
   }
 
   useEffect(() => {
-    if (!tasks) fetchTasks();
-  }, [tasks, fetchTasks]);
+    if (!tasks) {
+      fetchTasks();
+      if (profile?.access === 1) fetchCollaboratorsTasks();
+    }
+  }, [tasks, fetchTasks, fetchCollaboratorsTasks, profile]);
 
   useEffect(() => {
     if (!collaboratorsTasks && profile?.access === 1) fetchCollaboratorsTasks();
@@ -137,7 +140,7 @@ const Tasks: React.FC = () => {
               ref={newTaskInputRef}
             />
             <AddIcon onClick={handlers.openNewTaskModal} />
-            
+
             <button type="submit" hidden></button>
           </NewTaskContainer>
         </div>

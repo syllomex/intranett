@@ -1,17 +1,20 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useRef } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Input, Label, SubmitButton } from "../../components/Styled";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
-import { handleFormSubmit } from "../../utils/handleFormSubmit";
+import { handleFormData } from "../../utils/handleFormData";
+import { showMessage } from "../../utils/showMessage";
 
 import { Container, FormContainer, SignInForm, Title } from "./styles";
 
 const SignIn: React.FC = () => {
   const { profile, setProfile } = useProfile();
 
+  const responseRef = useRef<any>();
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    const data = handleFormSubmit(e);
+    const data = handleFormData(e);
 
     try {
       const response = await api.post("/auth", data);
@@ -22,7 +25,13 @@ const SignIn: React.FC = () => {
         setProfile({ access_token });
       }
     } catch (error) {
-      console.error(error.response.data.message);
+      let message = error.response.data.message;
+
+      if (message === "invalid password")
+        message = "Senha inválida. Tente novamente.";
+      else if (message === "user not found") message = "E-mail não cadastrado.";
+
+      showMessage(responseRef, message, "error");
     }
   }
 
@@ -34,10 +43,12 @@ const SignIn: React.FC = () => {
         <Title>Login</Title>
         <SignInForm onSubmit={handleSubmit}>
           <Label htmlFor="email">E-mail</Label>
-          <Input type="email" name="email" />
+          <Input type="email" name="email" required />
 
           <Label htmlFor="password">Senha</Label>
-          <Input type="password" name="password" />
+          <Input type="password" name="password" required />
+
+          <span className="alert" ref={responseRef}></span>
 
           <span className="form-style">
             Não possui uma conta? <Link to="/cadastro">Clique aqui</Link> para
