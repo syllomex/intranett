@@ -1,5 +1,5 @@
 import moment, { now } from "moment";
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import { handleFormData } from "../../utils/handleFormData";
@@ -17,12 +17,14 @@ const NewTaskForm: React.FC<IProps> = ({
   closeModal,
 }) => {
   const { profile } = useProfile();
-
+  const [fetching, setFetching] = useState(false);
+  
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    setFetching(true);
     let data = handleFormData(e);
     data.start_date = new Date(data.start_date + "T" + data.start_time);
     delete data.start_time;
-
+    
     try {
       await api.post("/tasks", data, {
         headers: {
@@ -31,8 +33,10 @@ const NewTaskForm: React.FC<IProps> = ({
       });
       setTasks(null);
       closeModal();
+      setFetching(false);
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error?.response?.data?.message);
+      setFetching(false);
     }
   }
 
@@ -66,7 +70,7 @@ const NewTaskForm: React.FC<IProps> = ({
         <CancelButton className="mr-1" onClick={() => closeModal()}>
           VOLTAR
         </CancelButton>
-        <SubmitButton>CRIAR</SubmitButton>
+        <SubmitButton disabled={fetching}>CRIAR</SubmitButton>
       </div>
     </form>
   );

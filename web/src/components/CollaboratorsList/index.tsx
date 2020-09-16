@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import { handleFormData } from "../../utils/handleFormData";
@@ -19,10 +19,12 @@ const CollaboratorsList: React.FC<IProps> = ({
   close,
 }) => {
   const { profile } = useProfile();
+  const [fetching, setFetching] = useState(false);
 
   const responseRef = useRef<any>();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    setFetching(true);
     e.preventDefault();
     const data = handleFormData(e);
 
@@ -35,8 +37,9 @@ const CollaboratorsList: React.FC<IProps> = ({
 
       let message = "Colaborador adicionado com sucesso!";
       showMessage(responseRef, message, "success");
+      setFetching(false);
     } catch (error) {
-      let message = error.response.data.message;
+      let message = error?.response?.data?.message;
 
       if (message === "user already in this team")
         message = "O colaborador já está na equipe.";
@@ -44,13 +47,14 @@ const CollaboratorsList: React.FC<IProps> = ({
         message = "Usuário não encontrado. Tente novamente.";
 
       showMessage(responseRef, message, "error");
+      setFetching(false);
     }
   }
 
   return (
     <div>
       {collaborators.map((collaborator: any) => (
-        <div key={collaborator.id} style={{marginBottom: "0.3rem"}}>
+        <div key={collaborator.id} style={{ marginBottom: "0.3rem" }}>
           {collaborator.name} ({collaborator.email})
         </div>
       ))}
@@ -59,7 +63,12 @@ const CollaboratorsList: React.FC<IProps> = ({
         <label className="form-style" htmlFor="email">
           Adicionar colaborador
         </label>
-        <BorderlessInput type="email" name="email" placeholder="E-mail" required />
+        <BorderlessInput
+          type="email"
+          name="email"
+          placeholder="E-mail"
+          required
+        />
 
         <span className="alert" ref={responseRef}></span>
 
@@ -67,7 +76,7 @@ const CollaboratorsList: React.FC<IProps> = ({
           <CancelButton className="mr-1" onClick={close}>
             VOLTAR
           </CancelButton>
-          <SubmitButton>ADICIONAR COLABORADOR</SubmitButton>
+          <SubmitButton disabled={fetching}>ADICIONAR COLABORADOR</SubmitButton>
         </div>
       </form>
     </div>

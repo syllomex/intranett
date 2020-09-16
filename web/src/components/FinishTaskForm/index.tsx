@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import moment, { now } from "moment";
 
 import { ITask } from "../../interfaces/Task";
@@ -22,10 +22,12 @@ const FinishTaskForm: React.FC<IProps> = ({
   handleCloseModal,
 }) => {
   const { profile } = useProfile();
-
+  const [fetching, setFetching] = useState(false);
+  
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    setFetching(true);
     e.preventDefault();
-
+    
     let data = handleFormData(e);
     data.end_date = new Date(`${data.end_date}T${data.end_time}`);
     delete data.end_time;
@@ -36,15 +38,17 @@ const FinishTaskForm: React.FC<IProps> = ({
           Authorization: `Bearer ${profile?.access_token}`,
         },
       });
-
+      
       setTasks(null);
       handleCloseFinishModal(false);
       handleCloseModal(false);
+      setFetching(false);
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error?.response?.data?.message);
+      setFetching(false);
     }
   }
-
+  
   return (
     <React.Fragment>
       <div>
@@ -79,7 +83,7 @@ const FinishTaskForm: React.FC<IProps> = ({
           <CancelButton className="mr-1" onClick={handleCloseFinishModal}>
             VOLTAR
           </CancelButton>
-          <SubmitButton>FINALIZAR TAREFA</SubmitButton>
+          <SubmitButton disabled={fetching}>FINALIZAR TAREFA</SubmitButton>
         </div>
       </form>
     </React.Fragment>

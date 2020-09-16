@@ -115,6 +115,11 @@ const GlobalStyles = createGlobalStyle`
     background-color: #fff;
   }
 
+  button.cancel:disabled, button.submit:disabled {
+    cursor: wait;
+    opacity: 0.4;
+  }
+
   span.alert {
     display: none;
     margin-bottom: 2rem;

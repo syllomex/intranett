@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import { handleFormData } from "../../utils/handleFormData";
@@ -11,8 +11,10 @@ interface IProps {
 
 const NewTeamForm: React.FC<IProps> = ({ onSuccess, close }) => {
   const { profile } = useProfile();
+  const [fetching, setFetching] = useState(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    setFetching(true);
     e.preventDefault();
     const data = handleFormData(e);
 
@@ -22,8 +24,10 @@ const NewTeamForm: React.FC<IProps> = ({ onSuccess, close }) => {
       });
 
       onSuccess();
+      setFetching(false);
     } catch (error) {
-      console.error(error.message);
+      console.error(error?.response?.data?.message);
+      setFetching(false);
     }
   }
 
@@ -41,7 +45,7 @@ const NewTeamForm: React.FC<IProps> = ({ onSuccess, close }) => {
           <CancelButton onClick={close} className="mr-1">
             VOLTAR
           </CancelButton>
-          <SubmitButton>CRIAR</SubmitButton>
+          <SubmitButton disabled={fetching}>CRIAR</SubmitButton>
         </div>
       </form>
     </div>

@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Input, Label, SubmitButton } from "../../components/Styled";
 import { useProfile } from "../../contexts/profile";
@@ -10,10 +10,12 @@ import { Container, FormContainer, SignInForm, Title } from "./styles";
 
 const SignIn: React.FC = () => {
   const { profile, setProfile } = useProfile();
+  const [fetching, setFetching] = useState(false);
 
   const responseRef = useRef<any>();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    setFetching(true);
     const data = handleFormData(e);
 
     try {
@@ -24,14 +26,16 @@ const SignIn: React.FC = () => {
         localStorage.setItem("access_token", access_token);
         setProfile({ access_token });
       }
+      setFetching(false);
     } catch (error) {
-      let message = error.response.data.message;
+      let message = error?.response?.data?.message;
 
       if (message === "invalid password")
         message = "Senha inválida. Tente novamente.";
       else if (message === "user not found") message = "E-mail não cadastrado.";
 
       showMessage(responseRef, message, "error");
+      setFetching(false);
     }
   }
 
@@ -55,7 +59,9 @@ const SignIn: React.FC = () => {
             cadastrar-se!
           </span>
 
-          <SubmitButton className="w-100">Entrar</SubmitButton>
+          <SubmitButton disabled={fetching} className="w-100">
+            Entrar
+          </SubmitButton>
         </SignInForm>
       </FormContainer>
     </Container>

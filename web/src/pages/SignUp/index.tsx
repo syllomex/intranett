@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
@@ -11,15 +11,17 @@ import { showMessage } from "../../utils/showMessage";
 
 const SignUp: React.FC = () => {
   const { profile, setProfile } = useProfile();
+  const [fetching, setFetching] = useState(false);
 
   const responseRef = useRef<any>();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    setFetching(true);
     const data = handleFormData(e);
-
+    
     try {
       await api.post("/users", data);
-
+      
       const response = await api.post("/auth", data);
       const access_token = response.data.access_token;
 
@@ -27,17 +29,19 @@ const SignUp: React.FC = () => {
         localStorage.setItem("access_token", access_token);
         setProfile({ access_token });
       }
+      setFetching(false);
     } catch (error) {
-      let message = error.response.data.message;
-
+      let message = error?.response?.data?.message;
+      
       if (message === "user already exists") message = "E-mail já utilizado.";
-
+      
       showMessage(responseRef, message, "error");
+      setFetching(false);
     }
   }
-
+  
   if (profile?.access_token) return <Redirect to="/tarefas" />;
-
+  
   return (
     <Container>
       <FormContainer>
@@ -58,7 +62,7 @@ const SignUp: React.FC = () => {
             Já possui uma conta? <Link to="/">Clique aqui</Link> para entrar!
           </span>
 
-          <SubmitButton className="w-100">Criar Conta</SubmitButton>
+          <SubmitButton disabled={fetching} className="w-100">Criar Conta</SubmitButton>
         </form>
       </FormContainer>
     </Container>

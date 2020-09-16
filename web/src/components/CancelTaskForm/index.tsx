@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import moment, { now } from "moment";
 
 import { formatTime } from "../../utils/formatTime";
@@ -28,8 +28,10 @@ const CancelTaskForm: React.FC<IProps> = ({
   handleCloseCancelModal,
 }) => {
   const { profile } = useProfile();
+  const [fetching, setFetching] = useState(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    setFetching(true);
     e.preventDefault();
 
     let data = handleFormData(e);
@@ -46,8 +48,10 @@ const CancelTaskForm: React.FC<IProps> = ({
       setTasks(null);
       handleCloseCancelModal(false);
       handleCloseModal(false);
+      setFetching(false);
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error?.response?.data?.message);
+      setFetching(false);
     }
   }
 
@@ -98,7 +102,7 @@ const CancelTaskForm: React.FC<IProps> = ({
           <CancelButton className="mr-1" onClick={handleCloseCancelModal}>
             VOLTAR
           </CancelButton>
-          <SubmitButton>CANCELAR TAREFA</SubmitButton>
+          <SubmitButton disabled={fetching}>CANCELAR TAREFA</SubmitButton>
         </div>
       </form>
     </React.Fragment>
