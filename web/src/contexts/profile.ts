@@ -20,7 +20,7 @@ async function fetchProfile(access_token: string): Promise<IProfile> {
 }
 
 function ProfileProvider(): IUseProfile {
-  const [profile, setProfile] = useState<any>();
+  const [profile, setProfile] = useState<any>(null);
 
   if (profile?.email) return { profile, setProfile };
 
@@ -44,6 +44,8 @@ function ProfileProvider(): IUseProfile {
     }
   };
   execFetchProfile();
+
+  if (profile === null) setProfile(undefined);
 
   return { profile, setProfile };
 }

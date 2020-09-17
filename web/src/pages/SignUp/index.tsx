@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
@@ -8,20 +8,27 @@ import { Container, FormContainer, Title } from "./styles";
 
 import { Input, Label, SubmitButton } from "../../components/Styled";
 import { showMessage } from "../../utils/showMessage";
+import { useLoadingSpinner } from "../../contexts/loadingSpinner";
 
 const SignUp: React.FC = () => {
   const { profile, setProfile } = useProfile();
   const [fetching, setFetching] = useState(false);
+
+  const { loadingSpinner, setLoadingSpinner } = useLoadingSpinner();
+  useEffect(() => {
+    if (profile === undefined && !loadingSpinner) setLoadingSpinner(true);
+    else if (profile !== undefined) setLoadingSpinner(false);
+  }, [profile, loadingSpinner, setLoadingSpinner]);
 
   const responseRef = useRef<any>();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     setFetching(true);
     const data = handleFormData(e);
-    
+
     try {
       await api.post("/users", data);
-      
+
       const response = await api.post("/auth", data);
       const access_token = response.data.access_token;
 
@@ -32,16 +39,16 @@ const SignUp: React.FC = () => {
       setFetching(false);
     } catch (error) {
       let message = error?.response?.data?.message;
-      
+
       if (message === "user already exists") message = "E-mail já utilizado.";
-      
+
       showMessage(responseRef, message, "error");
       setFetching(false);
     }
   }
-  
+
   if (profile?.access_token) return <Redirect to="/tarefas" />;
-  
+
   return (
     <Container>
       <FormContainer>
@@ -62,7 +69,9 @@ const SignUp: React.FC = () => {
             Já possui uma conta? <Link to="/">Clique aqui</Link> para entrar!
           </span>
 
-          <SubmitButton disabled={fetching} className="w-100">Criar Conta</SubmitButton>
+          <SubmitButton disabled={fetching} className="w-100">
+            Criar Conta
+          </SubmitButton>
         </form>
       </FormContainer>
     </Container>

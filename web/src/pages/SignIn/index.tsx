@@ -1,6 +1,7 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Input, Label, SubmitButton } from "../../components/Styled";
+import { useLoadingSpinner } from "../../contexts/loadingSpinner";
 import { useProfile } from "../../contexts/profile";
 import { api } from "../../services/api";
 import { handleFormData } from "../../utils/handleFormData";
@@ -10,6 +11,13 @@ import { Container, FormContainer, SignInForm, Title } from "./styles";
 
 const SignIn: React.FC = () => {
   const { profile, setProfile } = useProfile();
+
+  const { loadingSpinner, setLoadingSpinner } = useLoadingSpinner();
+  useEffect(() => {
+    if (profile === undefined && !loadingSpinner) setLoadingSpinner(true);
+    else if (profile !== undefined) setLoadingSpinner(false);
+  }, [profile, loadingSpinner, setLoadingSpinner]);
+
   const [fetching, setFetching] = useState(false);
 
   const responseRef = useRef<any>();
