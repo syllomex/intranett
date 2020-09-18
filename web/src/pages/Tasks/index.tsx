@@ -174,7 +174,7 @@ const Tasks: React.FC = () => {
         setState={setTeamsListModal}
         title="Suas equipes"
       >
-        <TeamsList close={handlers.closeTeamsListModal} />
+        <TeamsList close={handlers.closeTeamsListModal} refreshTasks={fetchCollaboratorsTasks} />
       </Modal>
     </React.Fragment>
   );

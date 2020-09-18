@@ -6,9 +6,10 @@ import Modal from "../Modal";
 
 interface IProps {
   close: React.Dispatch<any>;
+  refreshTasks: Function;
 }
 
-const TeamsList: React.FC<IProps> = ({ close }) => {
+const TeamsList: React.FC<IProps> = ({ close, refreshTasks }) => {
   const { profile } = useProfile();
 
   const [teams, setTeams] = useState<[] | null>(null);
@@ -66,7 +67,7 @@ const TeamsList: React.FC<IProps> = ({ close }) => {
   return (
     <div>
       {teams.map((team: any) => (
-        <div key={team.id} style={{marginBottom: "0.5rem"}}>
+        <div key={team.id} style={{ marginBottom: "0.5rem" }}>
           <a href="#!" onClick={() => handleClickTeam(team)}>
             {team.name}
           </a>
@@ -84,6 +85,7 @@ const TeamsList: React.FC<IProps> = ({ close }) => {
               close={handleCloseCollaboratorsModal}
               collaborators={collaborators}
               refreshCollaborators={fetchCollaborators}
+              refreshTasks={refreshTasks}
               team_id={team.id}
             />
           )}

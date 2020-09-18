@@ -8,6 +8,7 @@ import { BorderlessInput, CancelButton, SubmitButton } from "../Styled";
 interface IProps {
   collaborators: any[];
   refreshCollaborators: Function;
+  refreshTasks: Function;
   team_id: string;
   close: React.Dispatch<any>;
 }
@@ -15,6 +16,7 @@ interface IProps {
 const CollaboratorsList: React.FC<IProps> = ({
   collaborators,
   refreshCollaborators,
+  refreshTasks,
   team_id,
   close,
 }) => {
@@ -34,6 +36,7 @@ const CollaboratorsList: React.FC<IProps> = ({
       });
 
       refreshCollaborators();
+      refreshTasks();
 
       let message = "Colaborador adicionado com sucesso!";
       showMessage(responseRef, message, "success");
