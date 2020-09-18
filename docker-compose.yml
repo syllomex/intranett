@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  database:
+    container_name: database
+    build:
+      context: .
+      dockerfile: database.Dockerfile
+    ports:
+      - "5432:5432"
+
+  server:
+    container_name: server
+    depends_on:
+      - database
+    links:
+      - database
+    build:
+      context: .
+      dockerfile: node.Dockerfile
+    command: yarn dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+
+  web:
+    container_name: web
+    depends_on:
+      - server
+    links:
+      - server
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+    command: yarn start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/usr/src/app
+      - /usr/src/app/node_modules

@@ -1,9 +1,9 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "database",
   "port": 5432,
-  "username": "leo",
-  "password": "vsg72qc3",
+  "username": "intranett",
+  "password": "72837fbf8176690ae0c2f913c00528f3",
   "database": "intranett",
   "logging": false,
   "entities": ["src/repositories/implementations/*.ts"],
