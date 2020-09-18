@@ -11,6 +11,7 @@ Desenvolver um sistema simples de gerenciamento de tarefas.
 
 - ### Pré-requisitos
   - É **necessário** possuir o **[Docker](https://docs.docker.com/get-docker/)** instalado.
+  - Para instalar as dependências no host, é necessário ter o **[Node](https://nodejs.org/en/download/)** e o **[Yarn](https://classic.yarnpkg.com/en/docs/install)** instalados.
  
 1. #### Faça um clone do repositório:
 ```sh
