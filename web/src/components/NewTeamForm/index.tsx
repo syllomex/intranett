@@ -23,8 +23,8 @@ const NewTeamForm: React.FC<IProps> = ({ onSuccess, close }) => {
         headers: { Authorization: `Bearer ${profile?.access_token}` },
       });
 
-      onSuccess();
       setFetching(false);
+      onSuccess();
     } catch (error) {
       console.error(error?.response?.data?.message);
       setFetching(false);

@@ -39,10 +39,10 @@ const FinishTaskForm: React.FC<IProps> = ({
         },
       });
       
+      setFetching(false);
       setTasks(null);
       handleCloseFinishModal(false);
       handleCloseModal(false);
-      setFetching(false);
     } catch (error) {
       console.error(error?.response?.data?.message);
       setFetching(false);

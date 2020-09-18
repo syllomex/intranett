@@ -45,10 +45,10 @@ const CancelTaskForm: React.FC<IProps> = ({
         },
       });
 
+      setFetching(false);
       setTasks(null);
       handleCloseCancelModal(false);
       handleCloseModal(false);
-      setFetching(false);
     } catch (error) {
       console.error(error?.response?.data?.message);
       setFetching(false);

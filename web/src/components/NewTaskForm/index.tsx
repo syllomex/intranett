@@ -31,9 +31,9 @@ const NewTaskForm: React.FC<IProps> = ({
           Authorization: `Bearer ${profile?.access_token}`,
         },
       });
+      setFetching(false);
       setTasks(null);
       closeModal();
-      setFetching(false);
     } catch (error) {
       console.error(error?.response?.data?.message);
       setFetching(false);

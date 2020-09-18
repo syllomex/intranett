@@ -27,12 +27,11 @@
     "jest": "^26.4.2",
     "ts-jest": "^26.3.0",
     "ts-node-dev": "^1.0.0-pre.62",
-    "tsc": "^1.20150623.0",
     "typescript": "^4.0.2"
   },
   "scripts": {
-    "dev": "tsnd --files --transpile-only --respawn --ignore-watch node_modules ./src/server.ts",
-    "start": "node ./dist/server.js",
+    "dev": "npx ts-node-dev --files --transpile-only --respawn --ignore-watch node_modules ./src/server.ts",
+    "start": "tsc && node ./dist/server.js",
     "test": "jest --detectOpenHandles",
     "typeorm": "npx ts-node ./node_modules/typeorm/cli.js"
   }

@@ -30,11 +30,12 @@ const SignIn: React.FC = () => {
       const response = await api.post("/auth", data);
       const access_token = response.data.access_token;
 
+      setFetching(false);
+
       if (access_token) {
         localStorage.setItem("access_token", access_token);
         setProfile({ access_token });
       }
-      setFetching(false);
     } catch (error) {
       let message = error?.response?.data?.message;
 
